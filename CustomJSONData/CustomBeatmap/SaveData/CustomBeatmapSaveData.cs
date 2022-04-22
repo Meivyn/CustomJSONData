@@ -9,6 +9,10 @@ namespace CustomJSONData.CustomBeatmap
 {
     public partial class CustomBeatmapSaveData : BeatmapSaveData
     {
+        // TODO: Remove this when BSIPA gets a fix for missing GameAssemblies.
+        private static readonly Version _version2_6_0 = (Version)typeof(BeatmapSaveData)
+            .GetField("version2_6_0", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+
         // worst naming scheme ever
         private const string _beat = "b";
         private const string _colorType = "c";
@@ -82,7 +86,7 @@ namespace CustomJSONData.CustomBeatmap
         {
             Version version = GetVersionFromPath(path);
 
-            if (version.CompareTo(version2_6_0) <= 0)
+            if (version.CompareTo(_version2_6_0) <= 0)
             {
                 return SaveData2_6_0Converter.Convert2_6_0AndEarlier(
                     version, path, beatmapData, levelData);
